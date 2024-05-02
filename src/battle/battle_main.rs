@@ -1,3 +1,5 @@
+use crate::game_state::*;
+
 fn init_battle() -> () {
     // reset heap
     // allocate battle resources
@@ -15,8 +17,6 @@ fn init_battle() -> () {
 }
 
 fn init_battle_internal(g: &mut GameState) -> () {
-    let mut i;
-
     // set hblank to null
     // set vblank to null
 
@@ -42,7 +42,37 @@ fn init_battle_internal(g: &mut GameState) -> () {
     // -> set battle vars
 
     // -> set main callback to handle start battle
+    g.set_main_callback(handle_start_battle);
 
     // -> set in battle flag to TRUE
-    g.enter_battle();
+    g.state_mut().enter_battle();
+
+    // adjust friendship for every party member
+}
+
+fn get_multiplayer_id() -> u8 {
+    0
+}
+
+fn handle_start_battle(g: &mut GameState) {
+    let mut player_multiplayer_id: u8 = 0;
+    let mut enemy_multiplayer_id: u8 = 0;
+
+    // run tasks
+
+    // animate sprites
+
+    // build dam buffer
+
+    player_multiplayer_id = get_multiplayer_id();
+    // global battle scripting multplayer_id = multiplayer_id
+    // g.battle_scripting.multiplayer_id = player_multiplayer_id;
+
+    // enemy_multiplayer_id = player_multiplayer_id ^ BIT_SIDE;
+}
+
+fn battle_main_callback(g: &mut GameState) {
+    for active_battler in 0..g.active_battlers_count() {
+        // g.battle_controller_funcs[active_battler]();
+    }
 }

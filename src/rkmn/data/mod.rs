@@ -2,6 +2,7 @@ pub mod attack_data;
 pub mod condition_data;
 pub mod growth_data;
 pub mod misc_data;
+pub mod type_data;
 
 pub fn compute_substruct_order(personality_value: u32) -> [u8; 4] {
     let rem = personality_value % 24;

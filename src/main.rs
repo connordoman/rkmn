@@ -1,7 +1,11 @@
+mod battle;
+mod game;
+mod game_state;
 mod rkmn;
 
 fn main() {
-    let test_mon = rkmn::Rkmn::new();
+    let mut game = game::Game::new();
+    game.run();
 
-    println!("{:?}", test_mon)
+    let value = 0;
 }

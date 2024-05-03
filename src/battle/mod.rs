@@ -17,6 +17,7 @@ pub mod struct_protect;
 pub mod wish_future_knock;
 
 pub const MAX_BATTLERS_COUNT: usize = 4;
+pub const DEFAULT_BATTLERS_COUNT: usize = 2;
 pub const NUM_BATTLE_SIDES: usize = 2;
 
 pub const MAX_MON_MOVES: usize = 4;
@@ -201,6 +202,14 @@ impl Battle {
             arena_lost_opponent_mons: 0,
             already_statused_move_attempt: 0,
         }
+    }
+
+    pub fn increment_turn(&mut self) {
+        self.turn_counters_tracker += 1
+    }
+
+    pub fn num_turns(&self) -> u8 {
+        self.turn_counters_tracker
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::battle::{data::*, state::*};
+use crate::battle::{data::*, state::*, Battle};
 use crate::game::PARTY_SIZE;
 use crate::rkmn;
 use crate::task::*;
@@ -48,9 +48,9 @@ pub enum GameState {
     },
     InBattle {
         global: GlobalState,
+        battle: Battle,
         battle_data: BattleData,
         battle_state: BattleState,
-        active_battlers_count: u8,
     },
 }
 
@@ -78,9 +78,9 @@ impl GameState {
             println!("=== Entering Battle ===");
             *self = GameState::InBattle {
                 global: global.clone(),
+                battle: Battle::new(),
                 battle_data: BattleData::new(),
                 battle_state: BattleState::new(),
-                active_battlers_count: 2,
             }
         }
     }

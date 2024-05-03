@@ -27,7 +27,7 @@ pub struct BattleData {
     terrain: u8,
     active_battler: u8,
     controller_exec_flags: u32,
-    battlers_count: u8,
+    battlers_count: usize,
     battler_party_indexes: [u8; MAX_BATTLERS_COUNT],
     battler_positions: [u8; MAX_BATTLERS_COUNT],
     actions_by_turn_order: [u8; MAX_BATTLERS_COUNT],
@@ -104,7 +104,7 @@ impl BattleData {
             terrain: 0,
             active_battler: 0,
             controller_exec_flags: 0,
-            battlers_count: 0,
+            battlers_count: DEFAULT_BATTLERS_COUNT,
             battler_party_indexes: [0; MAX_BATTLERS_COUNT],
             battler_positions: [0; MAX_BATTLERS_COUNT],
             actions_by_turn_order: [0; MAX_BATTLERS_COUNT],
@@ -173,5 +173,9 @@ impl BattleData {
             move_to_learn: 0,
             battle_mon_forms: [0; MAX_BATTLERS_COUNT],
         }
+    }
+
+    pub fn num_battlers(&self) -> usize {
+        self.battlers_count
     }
 }

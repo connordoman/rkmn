@@ -237,6 +237,6 @@ impl TaskList {
     }
 }
 
-fn task_dummy(g: &mut GameState, task_id: usize) -> () {
+fn task_dummy(_: &mut GameState, _: usize) -> () {
     ()
 }

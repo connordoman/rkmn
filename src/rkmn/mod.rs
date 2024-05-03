@@ -3,6 +3,18 @@ pub mod ev;
 pub mod iv;
 pub mod rkrus;
 
+// Stats
+pub enum RkmnStat {
+    HP,
+    Attack,
+    Defense,
+    Speed,
+    SpecialAttack,
+    SpecialDefense,
+}
+
+pub const NUM_STATS: usize = 6;
+
 #[derive(Debug, Clone, Copy)]
 pub struct Rkmn {
     personality: u32,

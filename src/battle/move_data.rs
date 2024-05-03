@@ -1,3 +1,1 @@
-pub struct DisableStruct {}
-
-pub struct ProtectStruct {}
+use crate::battle::*;

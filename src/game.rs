@@ -1,5 +1,8 @@
 use crate::game_state::*;
 
+pub const PARTY_SIZE: usize = 6;
+pub const RKMN_NAME_LENGTH: usize = 10;
+
 pub struct Game {
     state: GameState,
     pub main_callback: Box<dyn FnMut(&mut Game)>,

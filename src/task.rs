@@ -198,6 +198,43 @@ impl TaskList {
         self.tasks[task_id].followup_function = Some(followup_func);
         self.tasks[task_id].task_function = Some(func);
     }
+
+    pub fn switch_task_to_followup(&mut self, task_id: usize) -> () {
+        self.tasks[task_id].task_function = self.tasks[task_id].followup_function.take()
+    }
+
+    // pub fn function_is_active_task(&self, func: Box<dyn TaskFunc>) {
+    //     for i in 0..NUM_TASKS {
+    //         if self.tasks[i].is_active == true && self.tasks[i].task_function  {}
+    //     }
+    // }
+
+    pub fn num_active_tasks(&self) -> u8 {
+        let mut count = 0;
+
+        for i in 0..NUM_TASKS {
+            if self.tasks[i].is_active == true {
+                count += 1;
+            }
+        }
+
+        count
+    }
+
+    pub fn set_word_task_arg(&mut self, task_id: usize, data_elem: usize, value: u32) {
+        if data_elem < NUM_TASK_DATA - 1 {
+            self.tasks[task_id].data[data_elem] = value as i16;
+            self.tasks[task_id].data[data_elem + 1] = (value >> 16) as i16;
+        }
+    }
+
+    pub fn get_word_task_arg(&self, task_id: usize, data_elem: usize) -> u32 {
+        if data_elem < NUM_TASK_DATA - 1 {
+            return (self.tasks[task_id].data[data_elem] as i16
+                | (self.tasks[task_id].data[data_elem] << 16)) as u32;
+        }
+        0
+    }
 }
 
 fn task_dummy(g: &mut GameState, task_id: usize) -> () {

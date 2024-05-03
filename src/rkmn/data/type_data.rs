@@ -1,3 +1,4 @@
+#[derive(Clone, Copy, Debug)]
 pub enum Type {
     Normal,
     Fire,
@@ -20,6 +21,7 @@ pub enum Type {
     Mystery,
 }
 
+#[derive(Clone, Copy, Debug)]
 pub enum TypeEffectiveness {
     Effective,
     SuperEffective,
@@ -223,15 +225,59 @@ impl Type {
             Type::Mystery => "???",
         }
     }
+
+    pub fn variants() -> Vec<Type> {
+        vec![
+            Type::Normal,
+            Type::Fire,
+            Type::Water,
+            Type::Electric,
+            Type::Grass,
+            Type::Ice,
+            Type::Fighting,
+            Type::Poison,
+            Type::Ground,
+            Type::Flying,
+            Type::Psychic,
+            Type::Bug,
+            Type::Rock,
+            Type::Ghost,
+            Type::Dragon,
+            Type::Dark,
+            Type::Steel,
+            Type::Foresight,
+            Type::Mystery,
+        ]
+    }
 }
 
 impl TypeEffectiveness {
-    fn apply(&self, damage: i32) -> i32 {
+    pub fn apply_damage(&self, damage: i32) -> i32 {
         match self {
             Self::Effective => damage,
             Self::SuperEffective => damage << 1, // times 2
             Self::NotEffective => damage >> 1,   // times 0.5
             Self::NoEffect => 0,
+        }
+    }
+}
+
+pub fn print_all_type_matchups() -> () {
+    let base_damage = 2;
+    for atk in Type::variants() {
+        for def in Type::variants() {
+            let eff = atk.compare(def);
+            match eff {
+                TypeEffectiveness::Effective => continue,
+                _ => println!(
+                    "{} x {} => {:?}: {:?} -> {:?}",
+                    atk.to_string(),
+                    def.to_string(),
+                    eff,
+                    base_damage,
+                    eff.apply_damage(2)
+                ),
+            }
         }
     }
 }

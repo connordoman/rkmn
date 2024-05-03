@@ -4,9 +4,11 @@ mod game_state;
 mod rkmn;
 mod task;
 
+use rkmn::data::type_data::*;
+
 fn main() {
     let mut game = game::Game::new();
     game.run();
 
-    let water_type = rkmn::data::type_data::Type::Water;
+    print_all_type_matchups();
 }

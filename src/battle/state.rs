@@ -1,76 +1,96 @@
-use crate::battle::{move_data::*, side_timer::*, *};
+use crate::{
+    battle::battle_main::{
+        battle_main_callback, battle_turn_passed, handle_start_battle, init_battle,
+        init_battle_internal,
+    },
+    state::GameState,
+};
 
-pub struct BattleState {
-    type_flags: u32,
-    terrain: u8,
-    active_battler: u8,
-    controller_exec_flags: u32,
-    battlers_count: u8,
-    battler_party_indexes: [u8; MAX_BATTLERS_COUNT],
-    battler_positions: [u8; MAX_BATTLERS_COUNT],
-    actions_by_turn_order: [u8; MAX_BATTLERS_COUNT],
-    battler_by_turn_order: [u8; MAX_BATTLERS_COUNT],
-    current_turn_action_number: u8,
-    current_action_func_id: u8,
-    // battle_mons: [BattleRkmn; MAX_BATTLERS_COUNT],
-    current_move_pos: u8,
-    chosen_move_pos: u8,
-    current_move: u16,
-    chosen_move: u16,
-    called_move: u16,
-    move_damage: i32,
-    hp_dealt: i32,
-    bide_damage: [i32; MAX_BATTLERS_COUNT],
-    last_used_item: u16,
-    last_used_ability: u8,
-    battler_attacker: u8,
-    battler_target: u8,
-    battler_fainted: u8,
-    effect_battler: u8,
-    potential_item_effect_battler: u8,
-    absent_battler_flags: u8,
-    crit_multiplier: u8,
-    multi_hit_counter: u8,
-    chosen_action_by_battler: [u8; MAX_BATTLERS_COUNT],
-    last_printed_moves: BattlerMoves,
-    last_moves: BattlerMoves,
-    last_landed_moves: BattlerMoves,
-    last_hit_by_type: BattlerMoves,
-    last_resulting_moves: BattlerMoves,
-    locked_moves: BattlerMoves,
-    last_hit_by: [u8; MAX_BATTLERS_COUNT],
-    chosen_move_by_battler: BattlerMoves,
-    move_result_flags: u8,
-    hit_marker: u32,
-    bide_target: [u8; MAX_BATTLERS_COUNT],
-    side_statuses: [u16; NUM_BATTLE_SIDES],
-    side_timers: [SideTimer; NUM_BATTLE_SIDES],
-    statuses_3: [u32; MAX_BATTLERS_COUNT],
-    disable_structs: [DisableStruct; MAX_BATTLERS_COUNT],
-    pause_counter_battle: u16,
-    payday_money: u16,
-    random_turn_number: u16,
-    battle_outcome: u8,
-    protect_structs: [ProtectStruct; MAX_BATTLERS_COUNT],
-    // special_statuses: [SpecialStatus; MAX_BATTLERS_COUNT],
-    battler_weather: u16,
-    // wish_future_knock: WishFutureKnock,
-    sent_mons_to_opponent: [u8; 2],
-    dynamic_base_power: u16,
-    exp_share_exp: u16,
-    // battle_enigma_berries: [BattleEnigmaBerry; MAX_BATTLERS_COUNT],
-    battle_struct: Battle,
-    battle_resources: BattleResources,
-    action_selection_cursor: [u8; MAX_BATTLERS_COUNT],
-    move_selection_cursor: [u8; MAX_BATTLERS_COUNT],
-    battler_status_summary_task_id: [u8; MAX_BATTLERS_COUNT],
-    battler_in_menu_id: u8,
-    doing_battle_anim: bool,
-    transformed_personalities: [u32; MAX_BATTLERS_COUNT],
-    player_dpad_hold_frames: u8,
-    // battle_controller_opponent_healthbox_data: BattleHealthboxInfo,
-    // battle_controller_opponent_flank_healthbox_data: BattleHealthboxInfo,
-    battle_move_power: u16,
-    move_to_learn: u16,
-    battle_mon_forms: [u8; MAX_BATTLERS_COUNT],
+pub enum BattleState {
+    Initializing,
+    InitBattleInternal,
+    StartBattle,
+    Main,
+    RunScripts,
+    TurnPassed,
+    End,
+}
+
+impl BattleState {
+    pub fn new() -> Self {
+        BattleState::Initializing
+    }
+
+    pub fn set_battle_state(&mut self, state: BattleState) {
+        *self = state;
+    }
+}
+
+pub fn handle_battle_state(game_state: &mut GameState) {
+    match game_state {
+        GameState::InBattle {
+            global,
+            battle,
+            battle_data,
+            battle_state,
+        } => {
+            match battle_state {
+                BattleState::Initializing => {
+                    // Initialize battle
+                    println!("=== Battle Start ===");
+                    // Set battle state to Main
+                    init_battle(global, battle, battle_data, battle_state);
+                }
+                BattleState::InitBattleInternal => {
+                    // Initialize battle internal
+                    println!("=== Battle Init Internal ===");
+                    // Set battle state to StartBattle
+                    // *battle_state = BattleState::StartBattle;
+                    init_battle_internal(global, battle, battle_data, battle_state);
+                }
+                BattleState::StartBattle => {
+                    // Start battle
+                    println!("=== Battle Start ===");
+                    // Set battle state to Main
+                    handle_start_battle(global, battle, battle_data, battle_state);
+                }
+                BattleState::Main => {
+                    // Main battle loop
+                    println!("=== Main Battle Loop ===");
+                    // Check if any battlers are dead
+                    // If all battlers are dead, set battle state to End
+                    // If not, set battle state to RunScripts
+                    battle_main_callback(global, battle, battle_data, battle_state);
+                }
+                BattleState::RunScripts => {
+                    // Run scripts for all battlers
+                    println!("=== Run Scripts ===");
+                    // Set battle state to TurnPassed
+                    *battle_state = BattleState::TurnPassed;
+                }
+                BattleState::TurnPassed => {
+                    // Check if all battlers have passed their turn
+                    println!("=== Turn Passed ===");
+                    // If so, set battle state to Main
+                    // *battle_state = BattleState::Main;
+                    // If not, set battle state to RunScripts
+                    // *battle_state = BattleState::RunScripts;
+
+                    // for debug purposes, advance to end state
+                    // *battle_state = BattleState::End;
+                    battle_turn_passed(global, battle, battle_data, battle_state);
+                }
+                BattleState::End => {
+                    // End battle
+                    println!("=== Battle End ===");
+                    // Set game state to Overworld
+                    global.is_running = false;
+                    *game_state = GameState::OutOfBattle {
+                        global: global.clone(),
+                    };
+                }
+            }
+        }
+        _ => panic!("Cannot battle if not in battle state!"),
+    }
 }

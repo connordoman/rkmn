@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::game_state::*;
+use crate::state::*;
 
 pub const HEAD_SENTINEL: usize = 0xFE;
 pub const TAIL_SENTINEL: usize = 0xFF;

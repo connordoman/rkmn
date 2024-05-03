@@ -1,4 +1,4 @@
-use crate::game_state::*;
+use crate::state::*;
 
 pub const PARTY_SIZE: usize = 6;
 pub const RKMN_NAME_LENGTH: usize = 10;
@@ -29,10 +29,11 @@ impl Game {
             if test_incr == 10 {
                 break;
             }
-            let dummy_callback = Box::new(|_: &mut Self| {});
-            let mut callback = std::mem::replace(&mut self.main_callback, dummy_callback);
-            callback(self);
-            self.main_callback = callback;
+            // let dummy_callback = Box::new(|_: &mut Self| {});
+            // let mut callback = std::mem::replace(&mut self.main_callback, dummy_callback);
+            // callback(self);
+            // self.main_callback = callback;
+
             test_incr += 1;
         }
     }

@@ -1,6 +1,20 @@
 use crate::battle::{move_data::*, side_timer::*, *};
 
-pub struct BattleState {
+pub enum BattleState {
+    Initializing,
+    Main,
+    RunScripts,
+    TurnPassed,
+    End,
+}
+
+impl BattleState {
+    pub fn new() -> Self {
+        BattleState::Initializing
+    }
+}
+
+pub struct BattleData {
     type_flags: u32,
     terrain: u8,
     active_battler: u8,
@@ -52,14 +66,14 @@ pub struct BattleState {
     random_turn_number: u16,
     battle_outcome: u8,
     protect_structs: [ProtectStruct; MAX_BATTLERS_COUNT],
-    // special_statuses: [SpecialStatus; MAX_BATTLERS_COUNT],
+    special_statuses: [SpecialStatus; MAX_BATTLERS_COUNT],
     battler_weather: u16,
-    // wish_future_knock: WishFutureKnock,
+    wish_future_knock: WishFutureKnock,
     sent_mons_to_opponent: [u8; 2],
     dynamic_base_power: u16,
     exp_share_exp: u16,
     // battle_enigma_berries: [BattleEnigmaBerry; MAX_BATTLERS_COUNT],
-    battle_struct: Battle,
+    battle_data: Battle,
     battle_resources: BattleResources,
     action_selection_cursor: [u8; MAX_BATTLERS_COUNT],
     move_selection_cursor: [u8; MAX_BATTLERS_COUNT],
@@ -73,4 +87,83 @@ pub struct BattleState {
     battle_move_power: u16,
     move_to_learn: u16,
     battle_mon_forms: [u8; MAX_BATTLERS_COUNT],
+}
+
+impl BattleData {
+    pub fn new() -> Self {
+        Self {
+            type_flags: 0,
+            terrain: 0,
+            active_battler: 0,
+            controller_exec_flags: 0,
+            battlers_count: 0,
+            battler_party_indexes: [0; MAX_BATTLERS_COUNT],
+            battler_positions: [0; MAX_BATTLERS_COUNT],
+            actions_by_turn_order: [0; MAX_BATTLERS_COUNT],
+            battler_by_turn_order: [0; MAX_BATTLERS_COUNT],
+            current_turn_action_number: 0,
+            current_action_func_id: 0,
+            // battle_mons: [BattleRkmn::new(); MAX_BATTLERS_COUNT],
+            current_move_pos: 0,
+            chosen_move_pos: 0,
+            current_move: 0,
+            chosen_move: 0,
+            called_move: 0,
+            move_damage: 0,
+            hp_dealt: 0,
+            bide_damage: [0; MAX_BATTLERS_COUNT],
+            last_used_item: 0,
+            last_used_ability: 0,
+            battler_attacker: 0,
+            battler_target: 0,
+            battler_fainted: 0,
+            effect_battler: 0,
+            potential_item_effect_battler: 0,
+            absent_battler_flags: 0,
+            crit_multiplier: 0,
+            multi_hit_counter: 0,
+            chosen_action_by_battler: [0; MAX_BATTLERS_COUNT],
+            last_printed_moves: default_battler_moves(),
+            last_moves: default_battler_moves(),
+            last_landed_moves: default_battler_moves(),
+            last_hit_by_type: default_battler_moves(),
+            last_resulting_moves: default_battler_moves(),
+            locked_moves: default_battler_moves(),
+            last_hit_by: [0; MAX_BATTLERS_COUNT],
+            chosen_move_by_battler: default_battler_moves(),
+            move_result_flags: 0,
+            hit_marker: 0,
+            bide_target: [0; MAX_BATTLERS_COUNT],
+            side_statuses: [0; NUM_BATTLE_SIDES],
+            side_timers: [SideTimer::new(); NUM_BATTLE_SIDES],
+            statuses_3: [0; MAX_BATTLERS_COUNT],
+            disable_structs: [DisableStruct::new(); MAX_BATTLERS_COUNT],
+            pause_counter_battle: 0,
+            payday_money: 0,
+            random_turn_number: 0,
+            battle_outcome: 0,
+            protect_structs: [ProtectStruct::new(); MAX_BATTLERS_COUNT],
+            special_statuses: [SpecialStatus::new(); MAX_BATTLERS_COUNT],
+            battler_weather: 0,
+            wish_future_knock: WishFutureKnock::new(),
+            sent_mons_to_opponent: [0; 2],
+            dynamic_base_power: 0,
+            exp_share_exp: 0,
+            // battle_enigma_berries: [BattleEnigmaBerry::new(); MAX_BATTLERS_COUNT],
+            battle_data: Battle::new(),
+            battle_resources: BattleResources::new(),
+            action_selection_cursor: [0; MAX_BATTLERS_COUNT],
+            move_selection_cursor: [0; MAX_BATTLERS_COUNT],
+            battler_status_summary_task_id: [0; MAX_BATTLERS_COUNT],
+            battler_in_menu_id: 0,
+            doing_battle_anim: false,
+            transformed_personalities: [0; MAX_BATTLERS_COUNT],
+            player_dpad_hold_frames: 0,
+            // battle_controller_opponent_healthbox_data: BattleHealthboxInfo::new(),
+            // battle_controller_opponent_flank_healthbox_data: BattleHealthboxInfo::new(),
+            battle_move_power: 0,
+            move_to_learn: 0,
+            battle_mon_forms: [0; MAX_BATTLERS_COUNT],
+        }
+    }
 }

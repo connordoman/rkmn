@@ -1,7 +1,7 @@
 mod battle;
 mod game;
-mod game_state;
 mod rkmn;
+mod state;
 mod task;
 
 fn main() {

@@ -1,6 +1,6 @@
 use std::fmt;
 
-use crate::game_state::*;
+use crate::state::*;
 
 pub const HEAD_SENTINEL: usize = 0xFE;
 pub const TAIL_SENTINEL: usize = 0xFF;
@@ -12,6 +12,13 @@ pub const FOLLOW_UP_INDEX: usize = NUM_TASK_DATA - 2;
 
 pub trait TaskFunc {
     fn call(&mut self, state: &mut GameState, task_id: usize);
+    fn clone_box(&self) -> Box<dyn TaskFunc>;
+}
+
+impl Clone for Box<dyn TaskFunc> {
+    fn clone(&self) -> Box<dyn TaskFunc> {
+        self.clone_box()
+    }
 }
 
 impl<F> TaskFunc for F
@@ -21,8 +28,13 @@ where
     fn call(&mut self, state: &mut GameState, task_id: usize) {
         self(state, task_id)
     }
+
+    fn clone_box(&self) -> Box<dyn TaskFunc> {
+        self.clone_box()
+    }
 }
 
+#[derive(Clone)]
 pub struct Task {
     task_function: Option<Box<dyn TaskFunc>>,
     followup_function: Option<Box<dyn TaskFunc>>,
@@ -63,6 +75,7 @@ impl Task {
     }
 }
 
+#[derive(Clone)]
 pub struct TaskList {
     tasks: [Task; NUM_TASKS],
 }

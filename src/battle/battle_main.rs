@@ -1,6 +1,7 @@
 use crate::game::*;
 
-fn init_battle(g: &mut Game) -> () {
+pub fn init_battle(g: &mut Game) -> () {
+    println!("=== Init battle ===");
     // reset heap
     // allocate battle resources
     // allocate battle sprites data
@@ -17,7 +18,8 @@ fn init_battle(g: &mut Game) -> () {
     g.set_main_callback(init_battle_internal);
 }
 
-fn init_battle_internal(g: &mut Game) -> () {
+pub fn init_battle_internal(g: &mut Game) -> () {
+    println!("=== Init battle internal ===");
     // set hblank to null
     // set vblank to null
 
@@ -51,11 +53,12 @@ fn init_battle_internal(g: &mut Game) -> () {
     // adjust friendship for every party member
 }
 
-fn get_multiplayer_id() -> u8 {
+pub fn get_multiplayer_id() -> u8 {
     0
 }
 
-fn handle_start_battle(g: &mut Game) {
+pub fn handle_start_battle(g: &mut Game) {
+    println!("=== Handle start battle ===");
     let mut player_multiplayer_id: u8 = 0;
     let mut enemy_multiplayer_id: u8 = 0;
 
@@ -72,7 +75,8 @@ fn handle_start_battle(g: &mut Game) {
     // enemy_multiplayer_id = player_multiplayer_id ^ BIT_SIDE;
 }
 
-fn battle_main_callback(g: &mut Game) {
+pub fn battle_main_callback(g: &mut Game) {
+    println!("=== Battle main callback ===");
     // for active_battler in 0..g.active_battlers_count() {
     //     // g.battle_controller_funcs[active_battler]();
     // }

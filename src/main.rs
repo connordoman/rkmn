@@ -1,3 +1,5 @@
+use std::{thread, time::Duration};
+
 mod battle;
 mod game;
 mod rkmn;
@@ -6,8 +8,11 @@ mod task;
 
 fn main() {
     let mut game = game::Game::new();
-    game.set_main_callback(battle::battle_main::init_battle);
+    // game.set_main_callback(battle::battle_main::init_battle);
+    // game.state_mut().enter_battle();
     game.run();
+
+    // thread::sleep(Duration::from_millis(3000));
 
     // print_all_type_matchups();
 }

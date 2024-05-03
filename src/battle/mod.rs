@@ -9,7 +9,6 @@ pub mod battle_main;
 pub mod data;
 pub mod move_data;
 pub mod scripting;
-pub mod setup;
 pub mod side_timer;
 pub mod special_status;
 pub mod state;

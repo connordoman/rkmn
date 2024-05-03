@@ -15,7 +15,8 @@ pub struct Player {
 pub struct GlobalState {
     pub settings: GameSettings,
     pub player: Player,
-    pub task_list: TaskList,
+    pub is_running: bool,
+    // pub task_list: TaskList,
 }
 
 impl GlobalState {
@@ -25,7 +26,8 @@ impl GlobalState {
             player: Player {
                 party: [rkmn::Rkmn::new(); PARTY_SIZE],
             },
-            task_list: TaskList::new(),
+            is_running: true,
+            // task_list: TaskList::new(),
         }
     }
 }
@@ -51,18 +53,19 @@ impl GameState {
 
     pub fn update(&mut self) {
         match self {
-            GameState::OutOfBattle { global } => {}
-            GameState::InBattle {
-                global,
-                battle_data,
-                battle_state,
-                active_battlers_count,
-            } => {}
+            GameState::OutOfBattle { global } => {
+                println!("=== Out of Battle ===");
+                self.enter_battle();
+            }
+            GameState::InBattle { .. } => {
+                handle_battle_state(self);
+            }
         }
     }
 
     pub fn enter_battle(&mut self) {
         if let GameState::OutOfBattle { global } = self {
+            println!("=== Entering Battle ===");
             *self = GameState::InBattle {
                 global: global.clone(),
                 battle_data: BattleData::new(),
@@ -74,9 +77,18 @@ impl GameState {
 
     pub fn exit_battle(&mut self) {
         if let GameState::InBattle { global, .. } = self {
+            println!("=== Exiting Battle ===");
             *self = GameState::OutOfBattle {
                 global: global.clone(),
             }
+        }
+    }
+
+    pub fn is_running(&self) -> bool {
+        match self {
+            GameState::OutOfBattle { global } => global.is_running,
+            GameState::InBattle { global, .. } => global.is_running,
+            // _ => false,
         }
     }
 }

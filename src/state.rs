@@ -11,12 +11,11 @@ pub struct Player {
     party: [rkmn::Rkmn; PARTY_SIZE],
 }
 
-#[derive(Clone)]
 pub struct GlobalState {
     pub settings: GameSettings,
     pub player: Player,
     pub is_running: bool,
-    // pub task_list: TaskList,
+    pub task_list: TaskList,
 }
 
 impl GlobalState {
@@ -27,7 +26,18 @@ impl GlobalState {
                 party: [rkmn::Rkmn::new(); PARTY_SIZE],
             },
             is_running: true,
-            // task_list: TaskList::new(),
+            task_list: TaskList::new(),
+        }
+    }
+}
+
+impl Clone for GlobalState {
+    fn clone(&self) -> Self {
+        Self {
+            settings: self.settings.clone(),
+            player: self.player.clone(),
+            is_running: self.is_running,
+            task_list: TaskList::new(),
         }
     }
 }

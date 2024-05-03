@@ -13,8 +13,8 @@ pub struct GameState {
     player: Player,
     in_battle: bool,
     active_battlers_count: u8,
-    battle_state: BattleState,
-    tasks: [Task; NUM_TASKS],
+    // battle_state: BattleState,
+    task_list: TaskList,
 }
 
 impl GameState {
@@ -23,11 +23,14 @@ impl GameState {
         let player = Player { party: Vec::new() };
         let in_battle = false;
         let active_battlers_count = 2; // hardcode 2 for testing
+                                       // let battle_state = ;
+        let task_list = TaskList::new();
         Self {
             settings,
             player,
             in_battle,
             active_battlers_count,
+            task_list,
         }
     }
 

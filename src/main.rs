@@ -8,5 +8,5 @@ fn main() {
     let mut game = game::Game::new();
     game.run();
 
-    let value = 0;
+    let water_type = rkmn::data::type_data::Type::Water;
 }

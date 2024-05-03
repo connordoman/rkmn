@@ -1,6 +1,6 @@
-use crate::game_state::*;
+use crate::game::*;
 
-fn init_battle() -> () {
+fn init_battle(g: &mut Game) -> () {
     // reset heap
     // allocate battle resources
     // allocate battle sprites data
@@ -14,9 +14,10 @@ fn init_battle() -> () {
     //      else pre init multi battle
     // else
     //      init battle internal
+    g.set_main_callback(init_battle_internal);
 }
 
-fn init_battle_internal(g: &mut GameState) -> () {
+fn init_battle_internal(g: &mut Game) -> () {
     // set hblank to null
     // set vblank to null
 
@@ -54,7 +55,7 @@ fn get_multiplayer_id() -> u8 {
     0
 }
 
-fn handle_start_battle(g: &mut GameState) {
+fn handle_start_battle(g: &mut Game) {
     let mut player_multiplayer_id: u8 = 0;
     let mut enemy_multiplayer_id: u8 = 0;
 
@@ -71,8 +72,8 @@ fn handle_start_battle(g: &mut GameState) {
     // enemy_multiplayer_id = player_multiplayer_id ^ BIT_SIDE;
 }
 
-fn battle_main_callback(g: &mut GameState) {
-    for active_battler in 0..g.active_battlers_count() {
-        // g.battle_controller_funcs[active_battler]();
-    }
+fn battle_main_callback(g: &mut Game) {
+    // for active_battler in 0..g.active_battlers_count() {
+    //     // g.battle_controller_funcs[active_battler]();
+    // }
 }

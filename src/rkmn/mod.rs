@@ -1,8 +1,7 @@
+pub mod data;
 pub mod ev;
 pub mod iv;
 pub mod rkrus;
-
-mod data;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Rkmn {

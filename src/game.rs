@@ -2,20 +2,20 @@ use crate::game_state::*;
 
 pub struct Game {
     state: GameState,
-    pub main_callback: Box<dyn FnMut(&mut GameState)>,
+    pub main_callback: Box<dyn FnMut(&mut Game)>,
 }
 
 impl Game {
     pub fn new() -> Self {
         Game {
             state: GameState::new(),
-            main_callback: Box::new(|g: &mut GameState| println!("Starting...")),
+            main_callback: Box::new(|_: &mut Game| println!("Starting...")),
         }
     }
 
     pub fn set_main_callback<F>(&mut self, f: F)
     where
-        F: FnMut(&mut GameState) + 'static,
+        F: FnMut(&mut Game) + 'static,
     {
         self.main_callback = Box::new(f);
     }
@@ -26,7 +26,10 @@ impl Game {
             if test_incr == 10 {
                 break;
             }
-            (self.main_callback)(&mut self.state);
+            let dummy_callback = Box::new(|_: &mut Self| {});
+            let mut callback = std::mem::replace(&mut self.main_callback, dummy_callback);
+            callback(self);
+            self.main_callback = callback;
             test_incr += 1;
         }
     }
@@ -38,7 +41,7 @@ impl Game {
 
 fn set_main_callback<F>(g: &mut Game, callback: F) -> ()
 where
-    F: FnMut(&mut GameState) + 'static,
+    F: FnMut(&mut Game) + 'static,
 {
     g.set_main_callback(callback)
 }

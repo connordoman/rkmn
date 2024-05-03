@@ -1,4 +1,4 @@
-use crate::battle::state::*;
+use crate::battle::{data::*, state::*};
 use crate::game::PARTY_SIZE;
 use crate::rkmn;
 use crate::task::*;

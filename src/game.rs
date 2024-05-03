@@ -35,3 +35,10 @@ impl Game {
         &mut self.state
     }
 }
+
+fn set_main_callback<F>(g: &mut Game, callback: F) -> ()
+where
+    F: FnMut(&mut GameState) + 'static,
+{
+    g.set_main_callback(callback)
+}

@@ -1,5 +1,6 @@
 pub mod battle_main;
 mod move_data;
+pub mod setup;
 mod side_timer;
 pub mod state;
 

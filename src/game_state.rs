@@ -1,4 +1,6 @@
+use crate::battle::state::*;
 use crate::rkmn;
+use crate::task::*;
 
 pub struct GameSettings {}
 
@@ -11,6 +13,8 @@ pub struct GameState {
     player: Player,
     in_battle: bool,
     active_battlers_count: u8,
+    battle_state: BattleState,
+    tasks: [Task; NUM_TASKS],
 }
 
 impl GameState {

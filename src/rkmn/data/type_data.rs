@@ -224,3 +224,14 @@ impl Type {
         }
     }
 }
+
+impl TypeEffectiveness {
+    fn apply(&self, damage: i32) -> i32 {
+        match self {
+            Self::Effective => damage,
+            Self::SuperEffective => damage << 1, // times 2
+            Self::NotEffective => damage >> 1,   // times 0.5
+            Self::NoEffect => 0,
+        }
+    }
+}

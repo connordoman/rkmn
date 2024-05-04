@@ -2,6 +2,7 @@ use std::{thread, time::Duration};
 
 mod battle;
 mod game;
+mod item;
 mod rkmn;
 mod state;
 mod task;

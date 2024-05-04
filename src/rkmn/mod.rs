@@ -6,6 +6,7 @@ pub mod ability;
 pub mod data;
 pub mod egg;
 pub mod ev;
+pub mod friendship;
 pub mod iv;
 pub mod moves;
 pub mod rkrus;

@@ -386,3 +386,20 @@ pub enum RkmnSpecies {
     Jirachi,
     Deoxys,
 }
+
+pub enum RkmnBodyColor {
+    Red,
+    Blue,
+    Yellow,
+    Green,
+    Black,
+    Brown,
+    Purple,
+    Gray,
+    White,
+    Pink,
+}
+
+pub fn percent_female(percent: f64) -> u8 {
+    std::cmp::min(254, ((percent as u16 * 255) / 100) as u8)
+}

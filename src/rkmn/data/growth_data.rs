@@ -1,3 +1,12 @@
+pub enum GrowthRate {
+    MediumFast,
+    Erratic,
+    Fluctuating,
+    MediumSlow,
+    Fast,
+    Slow,
+}
+
 #[derive(Debug, Clone, Copy)]
 pub struct GrowthData {
     species: u16,

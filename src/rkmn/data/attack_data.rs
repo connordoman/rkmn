@@ -1,3 +1,4 @@
+#[derive(Debug, Clone, Copy)]
 pub struct AttackData {
     moves: [u16; 4],
     pp: [u8; 4],

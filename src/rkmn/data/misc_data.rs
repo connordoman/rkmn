@@ -1,10 +1,12 @@
 use crate::rkmn::{iv, rkrus};
 
+#[derive(Debug, Clone, Copy)]
 pub enum RkmnAbilityChoice {
     First,
     Second,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct MiscData {
     rkrus: rkrus::Rkrus,
     met_at: u8,

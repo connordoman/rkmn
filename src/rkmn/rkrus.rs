@@ -7,6 +7,7 @@ pub enum RkrusStrain {
     D,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct Rkrus {
     strain_x: u8,
     days: u8,

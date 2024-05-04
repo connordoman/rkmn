@@ -1,8 +1,32 @@
+use self::{
+    attack_data::AttackData, condition_data::ConditionData, growth_data::GrowthData,
+    misc_data::MiscData,
+};
+
 pub mod attack_data;
 pub mod condition_data;
 pub mod growth_data;
 pub mod misc_data;
 pub mod type_data;
+
+#[derive(Debug, Clone, Copy)]
+pub struct RkmnData {
+    attack_data: AttackData,
+    condition_data: ConditionData,
+    growth_data: GrowthData,
+    misc_data: MiscData,
+}
+
+impl RkmnData {
+    pub fn new() -> Self {
+        Self {
+            attack_data: AttackData::new(),
+            condition_data: ConditionData::new(),
+            growth_data: GrowthData::new(),
+            misc_data: MiscData::new(),
+        }
+    }
+}
 
 pub fn compute_substruct_order(personality_value: u32) -> [u8; 4] {
     let rem = personality_value % 24;

@@ -1,5 +1,5 @@
 #[derive(Clone, Copy, Debug)]
-pub enum Type {
+pub enum RkmnType {
     Normal,
     Fire,
     Water,
@@ -29,8 +29,8 @@ pub enum TypeEffectiveness {
     NoEffect,
 }
 
-impl Type {
-    pub fn compare(&self, defending_type: Type) -> TypeEffectiveness {
+impl RkmnType {
+    pub fn compare(&self, defending_type: RkmnType) -> TypeEffectiveness {
         match self {
             Self::Normal => match defending_type {
                 Self::Rock => TypeEffectiveness::NotEffective,
@@ -204,49 +204,49 @@ impl Type {
 
     pub fn to_string(&self) -> &'static str {
         match self {
-            Type::Normal => "NORMAL",
-            Type::Fire => "FIRE",
-            Type::Water => "WATER",
-            Type::Electric => "ELECTR",
-            Type::Grass => "GRASS",
-            Type::Ice => "ICE",
-            Type::Fighting => "FIGHT",
-            Type::Poison => "POISON",
-            Type::Ground => "GROUND",
-            Type::Flying => "FLYING",
-            Type::Psychic => "PSYCHC",
-            Type::Bug => "BUG",
-            Type::Rock => "ROCK",
-            Type::Ghost => "GHOST",
-            Type::Dragon => "DRAGON",
-            Type::Dark => "DARK",
-            Type::Steel => "STEEL",
-            Type::Foresight => "FRSITE",
-            Type::Mystery => "???",
+            RkmnType::Normal => "NORMAL",
+            RkmnType::Fire => "FIRE",
+            RkmnType::Water => "WATER",
+            RkmnType::Electric => "ELECTR",
+            RkmnType::Grass => "GRASS",
+            RkmnType::Ice => "ICE",
+            RkmnType::Fighting => "FIGHT",
+            RkmnType::Poison => "POISON",
+            RkmnType::Ground => "GROUND",
+            RkmnType::Flying => "FLYING",
+            RkmnType::Psychic => "PSYCHC",
+            RkmnType::Bug => "BUG",
+            RkmnType::Rock => "ROCK",
+            RkmnType::Ghost => "GHOST",
+            RkmnType::Dragon => "DRAGON",
+            RkmnType::Dark => "DARK",
+            RkmnType::Steel => "STEEL",
+            RkmnType::Foresight => "FRSITE",
+            RkmnType::Mystery => "???",
         }
     }
 
-    pub fn variants() -> Vec<Type> {
+    pub fn variants() -> Vec<RkmnType> {
         vec![
-            Type::Normal,
-            Type::Fire,
-            Type::Water,
-            Type::Electric,
-            Type::Grass,
-            Type::Ice,
-            Type::Fighting,
-            Type::Poison,
-            Type::Ground,
-            Type::Flying,
-            Type::Psychic,
-            Type::Bug,
-            Type::Rock,
-            Type::Ghost,
-            Type::Dragon,
-            Type::Dark,
-            Type::Steel,
-            Type::Foresight,
-            Type::Mystery,
+            RkmnType::Normal,
+            RkmnType::Fire,
+            RkmnType::Water,
+            RkmnType::Electric,
+            RkmnType::Grass,
+            RkmnType::Ice,
+            RkmnType::Fighting,
+            RkmnType::Poison,
+            RkmnType::Ground,
+            RkmnType::Flying,
+            RkmnType::Psychic,
+            RkmnType::Bug,
+            RkmnType::Rock,
+            RkmnType::Ghost,
+            RkmnType::Dragon,
+            RkmnType::Dark,
+            RkmnType::Steel,
+            RkmnType::Foresight,
+            RkmnType::Mystery,
         ]
     }
 }
@@ -264,8 +264,8 @@ impl TypeEffectiveness {
 
 pub fn print_all_type_matchups() -> () {
     let base_damage = 2;
-    for atk in Type::variants() {
-        for def in Type::variants() {
+    for atk in RkmnType::variants() {
+        for def in RkmnType::variants() {
             let eff = atk.compare(def);
             match eff {
                 TypeEffectiveness::Effective => continue,

@@ -1,7 +1,13 @@
 use crate::state::*;
 
+pub const PLAYER_NAME_LENGTH: usize = 10;
+pub const PLAYER_NAME_SIZE: usize = PLAYER_NAME_LENGTH * 4;
+
 pub const PARTY_SIZE: usize = 6;
 pub const RKMN_NAME_LENGTH: usize = 10;
+pub const RKMN_NAME_SIZE: usize = RKMN_NAME_LENGTH * 4;
+
+pub const RKMN_DATA_SIZE: usize = 48;
 
 pub struct Game {
     state: GameState,
@@ -16,29 +22,12 @@ impl Game {
         }
     }
 
-    pub fn set_main_callback<F>(&mut self, f: F)
-    where
-        F: FnMut(&mut Game) + 'static,
-    {
-        self.main_callback = Box::new(f);
-    }
-
     pub fn run(&mut self) {
-        let mut test_incr = 0;
         loop {
-            // if test_incr == 10 {
-            //     break;
-            // }
-            // // let dummy_callback = Box::new(|_: &mut Self| {});
-            // // let mut callback = std::mem::replace(&mut self.main_callback, dummy_callback);
-            // // callback(self);
-            // // self.main_callback = callback;
-
             if self.state.is_running() == false {
                 break;
             }
 
-            // test_incr += 1;
             self.state.update();
         }
     }
@@ -46,11 +35,4 @@ impl Game {
     pub fn state_mut(&mut self) -> &mut GameState {
         &mut self.state
     }
-}
-
-fn set_main_callback<F>(g: &mut Game, callback: F) -> ()
-where
-    F: FnMut(&mut Game) + 'static,
-{
-    g.set_main_callback(callback)
 }

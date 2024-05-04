@@ -37,6 +37,12 @@ pub enum FriendshipAdjustment {
     EventFaintLarge,
 }
 
+impl From<FriendshipScore> for RkmnFriendship {
+    fn from(score: FriendshipScore) -> Self {
+        RkmnFriendship::FriendshipScore(score)
+    }
+}
+
 pub enum FriendshipScore {
     None,
     Standard,
@@ -46,6 +52,17 @@ pub enum FriendshipScore {
     OneHundredFiftyToOneNinetyNine,
     TwoHundredToTwoFiftyFour,
     Max,
+}
+
+impl From<FriendshipAdjustment> for RkmnFriendship {
+    fn from(adjustment: FriendshipAdjustment) -> Self {
+        RkmnFriendship::FriendshipAdjustment(adjustment)
+    }
+}
+
+pub enum RkmnFriendship {
+    FriendshipScore(FriendshipScore),
+    FriendshipAdjustment(FriendshipAdjustment),
 }
 
 const STANDARD_FRIENDSHIP: u8 = 70;

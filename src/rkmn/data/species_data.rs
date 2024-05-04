@@ -1,3 +1,6 @@
+extern crate num_traits;
+use num_traits::{FromPrimitive, NumCast, ToPrimitive};
+
 pub enum RkmnSpecies {
     Bulbasaur,
     Ivysaur,
@@ -200,6 +203,31 @@ pub enum RkmnSpecies {
     Slowking,
     Misdreavus,
     Unown,
+    UnownB,
+    UnownC,
+    UnownD,
+    UnownE,
+    UnownF,
+    UnownG,
+    UnownH,
+    UnownI,
+    UnownJ,
+    UnownK,
+    UnownL,
+    UnownM,
+    UnownN,
+    UnownO,
+    UnownP,
+    UnownQ,
+    UnownR,
+    UnownS,
+    UnownT,
+    UnownU,
+    UnownV,
+    UnownW,
+    UnownX,
+    UnownY,
+    UnownZ,
     Wobbuffet,
     Girafarig,
     Pineco,
@@ -400,6 +428,8 @@ pub enum RkmnBodyColor {
     Pink,
 }
 
-pub fn percent_female(percent: f64) -> u8 {
-    std::cmp::min(254, ((percent as u16 * 255) / 100) as u8)
+pub fn percent_female<T: ToPrimitive>(percent: T) -> u8 {
+    let scaled_value = percent.to_f32().unwrap_or_default() * 255.0 / 100.0;
+    let clamped_value = scaled_value.min(254.0);
+    NumCast::from(clamped_value).unwrap_or_default()
 }

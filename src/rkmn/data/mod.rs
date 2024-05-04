@@ -7,6 +7,7 @@ pub mod attack_data;
 pub mod condition_data;
 pub mod growth_data;
 pub mod misc_data;
+pub mod species_data;
 pub mod type_data;
 
 #[derive(Debug, Clone, Copy)]

@@ -6,6 +6,7 @@ use crate::{
 pub mod battle_ai;
 pub mod battle_history;
 pub mod battle_main;
+pub mod battle_start;
 pub mod data;
 pub mod move_data;
 pub mod scripting;

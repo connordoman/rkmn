@@ -3,6 +3,14 @@ use crate::game::PARTY_SIZE;
 use crate::rkmn;
 use crate::task::*;
 
+pub trait State {
+    fn update<W: State>(&mut self, wrapper: &mut W)
+    where
+        W: State + 'static;
+
+    fn set_state(&mut self, state: Self);
+}
+
 #[derive(Clone)]
 pub struct GameSettings {}
 
@@ -11,14 +19,14 @@ pub struct Player {
     party: [rkmn::Rkmn; PARTY_SIZE],
 }
 
-pub struct GlobalState {
+pub struct GlobalData {
     pub settings: GameSettings,
     pub player: Player,
     pub is_running: bool,
     pub task_list: TaskList,
 }
 
-impl GlobalState {
+impl GlobalData {
     pub fn new() -> Self {
         Self {
             settings: GameSettings {},
@@ -31,7 +39,7 @@ impl GlobalState {
     }
 }
 
-impl Clone for GlobalState {
+impl Clone for GlobalData {
     fn clone(&self) -> Self {
         Self {
             settings: self.settings.clone(),
@@ -44,10 +52,10 @@ impl Clone for GlobalState {
 
 pub enum GameState {
     OutOfBattle {
-        global: GlobalState,
+        global: GlobalData,
     },
     InBattle {
-        global: GlobalState,
+        global: GlobalData,
         battle: Battle,
         battle_data: BattleData,
         battle_state: BattleState,
@@ -57,13 +65,13 @@ pub enum GameState {
 impl GameState {
     pub fn new() -> Self {
         GameState::OutOfBattle {
-            global: GlobalState::new(),
+            global: GlobalData::new(),
         }
     }
 
     pub fn update(&mut self) {
         match self {
-            GameState::OutOfBattle { global } => {
+            GameState::OutOfBattle { .. } => {
                 println!("=== Out of Battle ===");
                 self.enter_battle();
             }
@@ -100,5 +108,33 @@ impl GameState {
             GameState::InBattle { global, .. } => global.is_running,
             // _ => false,
         }
+    }
+}
+
+impl State for GameState {
+    fn update<State>(&mut self, _: &mut State) {
+        if let GameState::InBattle {
+            global,
+            battle,
+            battle_data,
+            battle_state,
+        } = self
+        {
+            // Your code here
+
+            match self {
+                GameState::OutOfBattle { .. } => {
+                    println!("=== Out of Battle ===");
+                    self.enter_battle();
+                }
+                GameState::InBattle { .. } => {
+                    handle_battle_state(self);
+                }
+            }
+        }
+    }
+
+    fn set_state(&mut self, state: Self) {
+        *self = state
     }
 }

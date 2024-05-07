@@ -2,12 +2,12 @@ use super::RkmnStat;
 
 #[derive(Debug, Clone, Copy)]
 pub struct IVs {
-    hp: u8,
-    atk: u8,
-    def: u8,
-    spd: u8,
-    sp_atk: u8,
-    sp_def: u8,
+    pub hp: u8,
+    pub atk: u8,
+    pub def: u8,
+    pub spd: u8,
+    pub sp_atk: u8,
+    pub sp_def: u8,
 }
 
 impl IVs {

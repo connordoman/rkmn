@@ -1,5 +1,3 @@
-use std::{thread, time::Duration};
-
 mod battle;
 mod game;
 mod item;

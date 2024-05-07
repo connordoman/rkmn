@@ -24,7 +24,7 @@ impl BattleState {
 }
 
 impl State for BattleState {
-    fn update<GameState>(&mut self, game_state: &mut GameState) {
+    fn update<T: GameState>(&mut self, game_state: &mut GameState) {
         match self {
             BattleState::Initializing => {
                 // Initialize battle

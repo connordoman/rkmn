@@ -4,11 +4,7 @@ use crate::rkmn;
 use crate::task::*;
 
 pub trait State {
-    fn update<W: State>(&mut self, wrapper: &mut W)
-    where
-        W: State + 'static;
-
-    fn set_state(&mut self, state: Self);
+    fn update<T>(&mut self, data: &mut T) -> State;
 }
 
 #[derive(Clone)]
@@ -112,7 +108,7 @@ impl GameState {
 }
 
 impl State for GameState {
-    fn update<State>(&mut self, _: &mut State) {
+    fn update<T>(&mut self, _: &mut T) {
         if let GameState::InBattle {
             global,
             battle,
@@ -132,9 +128,5 @@ impl State for GameState {
                 }
             }
         }
-    }
-
-    fn set_state(&mut self, state: Self) {
-        *self = state
     }
 }

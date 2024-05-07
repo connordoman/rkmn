@@ -85,7 +85,7 @@ pub fn handle_start_battle(
     // global battle scripting multplayer_id = multiplayer_id
     // g.battle_scripting.multiplayer_id = player_multiplayer_id;
     match start_state {
-        BattleStartState::InitBattleControllers(_) => {}
+        BattleStartState::InitBattleControllers(s) => {}
         BattleStartState::BattleIntro(_) => {}
     }
     battle_state.set_battle_state(BattleState::Main);

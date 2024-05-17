@@ -3,9 +3,9 @@ use crate::game::PARTY_SIZE;
 use crate::rkmn;
 use crate::task::*;
 
-pub trait State {
-    fn update<T>(&mut self, data: &mut T) -> State;
-}
+// pub trait State {
+//     fn update<T>(&mut self, data: &mut T) -> State;
+// }
 
 #[derive(Clone)]
 pub struct GameSettings {}
@@ -107,26 +107,26 @@ impl GameState {
     }
 }
 
-impl State for GameState {
-    fn update<T>(&mut self, _: &mut T) {
-        if let GameState::InBattle {
-            global,
-            battle,
-            battle_data,
-            battle_state,
-        } = self
-        {
-            // Your code here
+// impl State for GameState {
+//     fn update<T>(&mut self, _: &mut T) {
+//         if let GameState::InBattle {
+//             global,
+//             battle,
+//             battle_data,
+//             battle_state,
+//         } = self
+//         {
+//             // Your code here
 
-            match self {
-                GameState::OutOfBattle { .. } => {
-                    println!("=== Out of Battle ===");
-                    self.enter_battle();
-                }
-                GameState::InBattle { .. } => {
-                    handle_battle_state(self);
-                }
-            }
-        }
-    }
-}
+//             match self {
+//                 GameState::OutOfBattle { .. } => {
+//                     println!("=== Out of Battle ===");
+//                     self.enter_battle();
+//                 }
+//                 GameState::InBattle { .. } => {
+//                     handle_battle_state(self);
+//                 }
+//             }
+//         }
+//     }
+// }

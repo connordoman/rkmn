@@ -1,9 +1,11 @@
-use battle::{
-    battle_start::{BattleIntroState, BattleStartState},
-    battle_state::{BattleContext, BattleState},
-    Battle,
+use std::{thread, time::Duration};
+
+use battle::state::BattleState;
+
+use crate::battle::{
+    data::BattleData,
+    state::{StateTransition, StateUpdate},
 };
-use state_machine::StateTransition;
 
 mod battle;
 mod game;
@@ -14,41 +16,27 @@ mod state_machine;
 // mod task;
 
 fn main() {
-    // let mut game = game::Game::new();
-    // game.set_main_callback(battle::battle_main::init_battle);
-    // game.state_mut().enter_battle();
-    // game.run();
+    let mut state = BattleState::Initialize;
+    state.on_enter();
 
-    // thread::sleep(Duration::from_millis(3000));
-
-    // print_all_type_matchups();
-
-    /*
-        Debug new state machine architecture
-    */
-
-    let mut current_state: Box<dyn StateTransition<BattleContext>> =
-        Box::new(battle::battle_state::BattleState::StartBattle(
-            BattleStartState::BattleIntro(BattleIntroState::Begin),
-        ));
-    current_state.on_enter();
-
-    let mut battle_context: BattleContext = BattleContext {
-        battle_data: Battle::new(),
-        battle_state: BattleState::Initializing,
-    };
+    let mut battle_data = BattleData::new();
 
     loop {
-        if let Some(next_state) = current_state.update(&mut battle_context) {
-            current_state.on_exit();
-            current_state = next_state;
-            current_state.on_enter();
-        } else {
-            panic!("No next state")
+        let new_state = state.update(&mut battle_data);
+        if &new_state as *const _ != &state as *const _ {
+            state.on_exit();
+            state = new_state;
+            state.on_enter();
         }
 
-        if battle_context.battle_state == BattleState::End {
+        thread::sleep(Duration::from_millis(1000));
+
+        if matches!(state, BattleState::End) {
             break;
         }
     }
+
+    state.on_exit();
+
+    println!("Exited state machine.")
 }

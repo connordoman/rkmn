@@ -3,17 +3,17 @@ use crate::{
     rkmn::NUM_STATS,
 };
 
-pub mod battle_ai;
-pub mod battle_history;
+pub mod action;
+pub mod ai;
+pub mod history;
 // pub mod battle_main;
-pub mod battle_start;
-pub mod battle_state;
 pub mod data;
 pub mod move_data;
 pub mod scripting;
 pub mod side_timer;
 pub mod special_status;
 pub mod state;
+pub mod state_start;
 pub mod struct_disable;
 pub mod struct_protect;
 pub mod wish_future_knock;

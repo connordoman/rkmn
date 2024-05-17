@@ -1,155 +1,87 @@
-use crate::{
-    battle::battle_main::{
-        battle_main_callback, battle_turn_passed, handle_start_battle, init_battle,
-    },
-    state::{GameState, State},
+use crate::battle::{
+    action::{get_battle_action, BattleAction},
+    data::BattleData,
 };
+pub trait StateTransition<S> {
+    fn on_enter(&self) -> ();
+    fn on_exit(&self) -> ();
+}
 
-use super::battle_start::BattleStartState;
+pub trait StateUpdate<S, D> {
+    fn update(&self, data: &mut D) -> S;
+}
 
 pub enum BattleState {
-    Initializing,
-    StartBattle(BattleStartState),
-    Main,
-    ActionSelection,
-    RunScripts,
+    Initialize,
+    Start,
+    ActionSelect,
+    ActionExecute(BattleAction),
     TurnPassed,
     End,
 }
 
-impl BattleState {
-    pub fn new() -> Self {
-        BattleState::Initializing
-    }
-}
-
-impl State for BattleState {
-    fn update<T: GameState>(&mut self, game_state: &mut GameState) {
+impl StateTransition<BattleState> for BattleState {
+    fn on_enter(&self) -> () {
         match self {
-            BattleState::Initializing => {
-                // Initialize battle
-                println!("=== Battle Start ===");
-                // Set battle state to Main
-                init_battle(global, battle, battle_data, battle_state);
-            }
-            BattleState::StartBattle(s) => {
-                // Start battle
-                println!("=== Battle Start ===");
-                // Set battle state to Main
-                handle_start_battle(global, battle, battle_data, battle_state, s);
-            }
-            BattleState::Main => {
-                // Main battle loop
-                println!("=== Main Battle Loop ===");
-                // Check if any battlers are dead
-                // If all battlers are dead, set battle state to End
-                // If not, set battle state to RunScripts
-                battle_main_callback(global, battle, battle_data, battle_state);
-            }
-            BattleState::ActionSelection => {
-                // Select action for all battlers
-                println!("=== Action Selection ===");
-                // Set battle state to RunScripts
-                *battle_state = BattleState::RunScripts;
-            }
-            BattleState::RunScripts => {
-                // Run scripts for all battlers
-                println!("=== Run Scripts ===");
-                // Set battle state to TurnPassed
-                *battle_state = BattleState::TurnPassed;
-            }
-            BattleState::TurnPassed => {
-                // Check if all battlers have passed their turn
-                println!("=== Turn Passed ===");
-                // If so, set battle state to Main
-                // *battle_state = BattleState::Main;
-                // If not, set battle state to RunScripts
-                // *battle_state = BattleState::RunScripts;
-
-                // for debug purposes, advance to end state
-                // *battle_state = BattleState::End;
-                battle_turn_passed(global, battle, battle_data, battle_state);
-            }
-            BattleState::End => {
-                // End battle
-                println!("=== Battle End ===");
-                // Set game state to Overworld
-                global.is_running = false;
-                *game_state = GameState::OutOfBattle {
-                    global: global.clone(),
-                };
-            }
+            BattleState::Initialize => println!("Battle initializing..."),
+            BattleState::Start => println!("Battle starting..."),
+            BattleState::ActionSelect => println!("Action selection..."),
+            BattleState::ActionExecute(action) => println!("Checking action \"{:?}\"...", action),
+            BattleState::TurnPassed => println!("Cleaning up state and prepping for next turn..."),
+            BattleState::End => println!("Battle ending..."),
         }
     }
-    fn set_state(&mut self, state: BattleState) {
-        *self = state
+
+    fn on_exit(&self) -> () {
+        match self {
+            BattleState::Initialize => println!("Battle initialized."),
+            BattleState::Start => println!("Battle started."),
+            BattleState::ActionSelect => println!("Action selected."),
+            BattleState::ActionExecute(action) => println!("Executed action: {:?}.", action),
+            BattleState::TurnPassed => println!("Turn completed."),
+            BattleState::End => println!("Battle ended."),
+        }
     }
 }
 
-pub fn handle_battle_state(game_state: &mut GameState) {
-    match game_state {
-        GameState::InBattle {
-            global,
-            battle,
-            battle_data,
-            battle_state,
-        } => {
-            match battle_state {
-                BattleState::Initializing => {
-                    // Initialize battle
-                    println!("=== Battle Start ===");
-                    // Set battle state to Main
-                    init_battle(global, battle, battle_data, battle_state);
-                }
-                BattleState::StartBattle(s) => {
-                    // Start battle
-                    println!("=== Battle Start ===");
-                    // Set battle state to Main
-                    handle_start_battle(global, battle, battle_data, battle_state, s);
-                }
-                BattleState::Main => {
-                    // Main battle loop
-                    println!("=== Main Battle Loop ===");
-                    // Check if any battlers are dead
-                    // If all battlers are dead, set battle state to End
-                    // If not, set battle state to RunScripts
-                    battle_main_callback(global, battle, battle_data, battle_state);
-                }
-                BattleState::ActionSelection => {
-                    // Select action for all battlers
-                    println!("=== Action Selection ===");
-                    // Set battle state to RunScripts
-                    *battle_state = BattleState::RunScripts;
-                }
-                BattleState::RunScripts => {
-                    // Run scripts for all battlers
-                    println!("=== Run Scripts ===");
-                    // Set battle state to TurnPassed
-                    *battle_state = BattleState::TurnPassed;
-                }
-                BattleState::TurnPassed => {
-                    // Check if all battlers have passed their turn
-                    println!("=== Turn Passed ===");
-                    // If so, set battle state to Main
-                    // *battle_state = BattleState::Main;
-                    // If not, set battle state to RunScripts
-                    // *battle_state = BattleState::RunScripts;
-
-                    // for debug purposes, advance to end state
-                    // *battle_state = BattleState::End;
-                    battle_turn_passed(global, battle, battle_data, battle_state);
-                }
-                BattleState::End => {
-                    // End battle
-                    println!("=== Battle End ===");
-                    // Set game state to Overworld
-                    global.is_running = false;
-                    *game_state = GameState::OutOfBattle {
-                        global: global.clone(),
-                    };
-                }
+impl StateUpdate<BattleState, BattleData> for BattleState {
+    fn update(&self, data: &mut BattleData) -> BattleState {
+        match self {
+            BattleState::Initialize => BattleState::Start,
+            BattleState::Start => BattleState::ActionSelect,
+            BattleState::ActionSelect => {
+                println!("======== Turn {} ========", "xx");
+                // let action = match data.turn_count {
+                //     5 => BattleAction::Run,
+                //     _ => BattleAction::Fight,
+                // };
+                let action = get_battle_action();
+                BattleState::ActionExecute(action)
             }
+            BattleState::ActionExecute(action) => match action {
+                BattleAction::None => BattleState::ActionSelect,
+                BattleAction::Fight => {
+                    println!("Fighting...");
+                    BattleState::TurnPassed
+                }
+                BattleAction::Item => {
+                    println!("Choose an item: (not implemented)");
+                    BattleState::TurnPassed
+                }
+                BattleAction::Switch => {
+                    println!("Switch your fighter: (not implemented)");
+                    BattleState::TurnPassed
+                }
+                BattleAction::Run => {
+                    println!("Got away safely!");
+                    BattleState::End
+                }
+            },
+            BattleState::TurnPassed => {
+                // data.turn_count += 1;
+                BattleState::ActionSelect
+            }
+            BattleState::End => BattleState::End,
         }
-        _ => panic!("Cannot battle if not in battle state!"),
     }
 }

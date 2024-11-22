@@ -22,6 +22,7 @@ impl MiscData {
         let ivs = iv::IVs::new();
         let is_egg = false;
         let ability = RkmnAbilityChoice::First;
+
         MiscData {
             rkrus,
             met_at,

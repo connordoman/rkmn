@@ -1,18 +1,17 @@
 use std::{thread, time::Duration};
 
+use v2::battle::{trainers::Trainer, Battle};
+
 mod battle;
 mod game;
 mod rkmn;
 mod state;
 mod task;
 
+mod v2;
+
 fn main() {
-    let mut game = game::Game::new();
-    // game.set_main_callback(battle::battle_main::init_battle);
-    // game.state_mut().enter_battle();
-    game.run();
-
-    // thread::sleep(Duration::from_millis(3000));
-
-    // print_all_type_matchups();
+    let trainer_a = Trainer::new_test_trainer();
+    let trainer_b = Trainer::new_test_trainer();
+    let battle = Battle::new_single_trainer(trainer_a, trainer_b);
 }

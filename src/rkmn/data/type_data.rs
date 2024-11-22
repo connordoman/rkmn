@@ -221,7 +221,7 @@ impl Type {
             Type::Dragon => "DRAGON",
             Type::Dark => "DARK",
             Type::Steel => "STEEL",
-            Type::Foresight => "FRSITE",
+            Type::Foresight => "SIGHT",
             Type::Mystery => "???",
         }
     }
@@ -252,7 +252,7 @@ impl Type {
 }
 
 impl TypeEffectiveness {
-    pub fn apply_damage(&self, damage: i32) -> i32 {
+    pub fn apply_to_damage(&self, damage: i32) -> i32 {
         match self {
             Self::Effective => damage,
             Self::SuperEffective => damage << 1, // times 2
@@ -275,7 +275,7 @@ pub fn print_all_type_matchups() -> () {
                     def.to_string(),
                     eff,
                     base_damage,
-                    eff.apply_damage(2)
+                    eff.apply_to_damage(2) // divide by 2 = 1, times 2 = 4
                 ),
             }
         }

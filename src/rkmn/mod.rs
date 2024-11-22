@@ -24,7 +24,7 @@ pub struct Rkmn {
     misc_flags: u8,
     markings: u8,
     checksum: u16,
-    level: u8,
+    pub level: u8,
     mail_id: u8,
     _unused: u8,
     data: [u8; 48],

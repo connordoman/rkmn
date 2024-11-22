@@ -1,9 +1,9 @@
-pub struct AttackData {
+pub struct FightData {
     moves: [u16; 4],
     pp: [u8; 4],
 }
 
-impl AttackData {
+impl FightData {
     pub fn new() -> Self {
         Self {
             moves: [0; 4],

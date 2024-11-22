@@ -1,15 +1,10 @@
-use crate::battle::{
-    action::{get_battle_action, BattleAction},
-    data::BattleData,
+use crate::{
+    battle::{
+        action::{get_battle_action, BattleAction},
+        data::BattleData,
+    },
+    state::{StateTransition, StateUpdate},
 };
-pub trait StateTransition<S> {
-    fn on_enter(&self) -> ();
-    fn on_exit(&self) -> ();
-}
-
-pub trait StateUpdate<S, D> {
-    fn update(&self, data: &mut D) -> S;
-}
 
 pub enum BattleState {
     Initialize,
@@ -78,7 +73,7 @@ impl StateUpdate<BattleState, BattleData> for BattleState {
                 }
             },
             BattleState::TurnPassed => {
-                // data.turn_count += 1;
+                // data. += 1;
                 BattleState::ActionSelect
             }
             BattleState::End => BattleState::End,

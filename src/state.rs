@@ -3,9 +3,14 @@ use crate::game::PARTY_SIZE;
 use crate::rkmn;
 use crate::task::*;
 
-// pub trait State {
-//     fn update<T>(&mut self, data: &mut T) -> State;
-// }
+pub trait StateTransition<S> {
+    fn on_enter(&self) -> ();
+    fn on_exit(&self) -> ();
+}
+
+pub trait StateUpdate<S, D> {
+    fn update(&self, data: &mut D) -> S;
+}
 
 #[derive(Clone)]
 pub struct GameSettings {}

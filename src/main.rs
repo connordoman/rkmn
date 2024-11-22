@@ -2,17 +2,13 @@ use std::{thread, time::Duration};
 
 use battle::state::BattleState;
 
-use crate::battle::{
-    data::BattleData,
-    state::{StateTransition, StateUpdate},
-};
+use crate::battle::data::BattleData;
 
 mod battle;
 mod game;
 mod item;
 mod rkmn;
-// mod state;
-mod state_machine;
+mod state;
 // mod task;
 
 fn main() {
